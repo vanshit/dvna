@@ -16,45 +16,15 @@ pipeline {
             }
         }
 
-        stage ('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'SonarQube Scanner'
-            }
-            steps {
-                withSonarQubeEnv ('SonarQube') {
-                    sh '${scannerHome}/bin/sonar-scanner'
-                    sh 'cat .scannerwork/report-task.txt > /{JENKINS HOME DIRECTORY}/reports/sonarqube-report'
-                }
-            }
-        }
-
         stage ('NPM Audit Analysis') {
             steps {
                 sh '/{PATH TO SCRIPT}/npm-audit.sh'
             }
         }
-
-        stage ('NodeJsScan Analysis') {
-            steps {
-                sh 'nodejsscan --directory `pwd` --output /{JENKINS HOME DIRECTORY}/reports/nodejsscan-report'
-            }
-        }
-
-        stage ('Retire.js Analysis') {
-            steps {
-                sh 'retire --path `pwd` --outputformat json --outputpath /{JENKINS HOME DIRECTORY}/reports/retirejs-report --exitwith 0'
-            }
-        }
-
+        
         stage ('Dependency-Check Analysis') {
             steps {
                 sh '/{JENKINS HOME DIRECTORY}/dependency-check/bin/dependency-check.sh --scan `pwd` --format JSON --out /{JENKINS HOME DIRECTORY}/reports/dependency-check-report --prettyPrint'
-            }
-        }
-
-        stage ('Audit.js Analysis') {
-            steps {
-                sh '/{PATH TO SCRIPT}/auditjs.sh'
             }
         }
 
