@@ -14,23 +14,10 @@ pipeline {
             steps {
                 sh 'npm install --force'
             }
-        }
-
-        stage ('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'SonarQube Scanner'
-            }
-            steps {
-                withSonarQubeEnv ('SonarQube') {
-                    sh '${scannerHome}/bin/sonar-scanner'
-                    sh 'cat .scannerwork/report-task.txt > /{JENKINS HOME DIRECTORY}/reports/sonarqube-report'
-                }
-            }
-        }
 
         stage ('NPM Audit Analysis') {
             steps {
-                sh '/{PATH TO SCRIPT}/npm-audit.sh'
+                sh '/home/user/Desktop/dvna/npm-audit.sh'
             }
         }
 
